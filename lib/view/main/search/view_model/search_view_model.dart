@@ -1,4 +1,7 @@
+import 'package:dio/dio.dart';
+import 'package:dr_alshaal/config/env.dart';
 import 'package:dr_alshaal/controller/management_controller.dart';
+import 'package:dr_alshaal/models/base_response/base_response.dart';
 import 'package:dr_alshaal/models/category/category.dart';
 import 'package:dr_alshaal/models/search/search.dart';
 import 'package:dr_alshaal/repository/search_repo.dart';
@@ -8,6 +11,7 @@ import '../../../../models/topic/topic.dart';
 import '../../../../repository/filter_repo.dart';
 
 class SearchViewModel extends GetxController with ManagementController {
+  Dio dio = Dio();
   Search? itemSearch;
   List<Topic>? topicList;
   Rx<Topic?> selectedTopic = Rx(null);
@@ -19,39 +23,67 @@ class SearchViewModel extends GetxController with ManagementController {
   String? selectedDateTo;
   String? query;
   int page = 1;
-  bool statusSearch = false, statusSubject = false, statusTopic = false, statusAttachment = false;
+  bool statusSearch = false,
+      statusSubject = false,
+      statusTopic = false,
+      statusAttachment = false;
 
   @override
-  bool get status => statusSearch && statusSubject && statusTopic && statusAttachment;
+  bool get status =>
+      statusSearch && statusSubject && statusTopic && statusAttachment;
 
   getAllData() async {
     selectedSubject.value = null;
     selectedAttachment.value = null;
     selectedTopic.value = null;
     setMainLoading(true);
-    await Future.wait<dynamic>([topics(), subjects(), materialAttachment(), search()]);
+    await Future.wait<dynamic>(
+        [topics(), subjects(), materialAttachment(), search()]);
     selectedSubject.value = subjectList![0];
     setMainLoading(false);
   }
 
   search({bool isPagination = false}) async {
-    var response = await SearchRepo.instance.search(
-      from: selectedDateFrom,
-      to: selectedDateTo,
-      topic: selectedTopic.value?.id.toString(),
-      attachment: selectedAttachment.value == 'الكل' ? null : selectedAttachment.value,
-      type: selectedSubject.value?.id.toString(),
-      query: query,
-      page: page,
+    final queryParameters = <String, dynamic>{
+      r'search': query,
+      r'topic': selectedTopic.value?.id.toString(),
+      r'type': selectedSubject.value?.id.toString(),
+      r'attachment':
+          selectedAttachment.value == 'الكل' ? null : selectedAttachment.value,
+      r'from': selectedDateFrom,
+      r'to': selectedDateTo,
+      r'page': page,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    var temp = await dio.get(
+        'https://d.dr-shaal.com/api/search_materials?search=%D8%AD&topic=null&type=null&questions=null&attachment=null&from=null&to=null&page=0');
+    final value = BaseResponse<Search>.fromJson(
+      temp.data!,
+      (json) => Search.fromJson(json as Map<String, dynamic>),
     );
+    var response = value;
+    print(response.success);
+
+    // var response = await SearchRepo.instance.search(
+    //   from: selectedDateFrom,
+    //   to: selectedDateTo,
+    //   topic: selectedTopic.value?.id.toString(),
+    //   attachment: selectedAttachment.value == 'الكل' ? null : selectedAttachment.value,
+    //   type: selectedSubject.value?.id.toString(),
+    //   query: query,
+    //   page: page,
+    // );
     if (response.success) {
       if (isPagination) {
         if (selectedSubject.value?.id == 'questions') {
           itemSearch?.questions?.addAll(response.data!.questions!.toList());
-          itemSearch?.questionsHasNextPage = response.data!.questionsHasNextPage;
+          itemSearch?.questionsHasNextPage =
+              response.data!.questionsHasNextPage;
         } else {
-          itemSearch?.list![0].materials?.addAll(response.data!.list![0].materials!.toList());
-          itemSearch?.list![0].hasNextPage = response.data!.list![0].hasNextPage;
+          itemSearch?.list![0].materials
+              ?.addAll(response.data!.list![0].materials!.toList());
+          itemSearch?.list![0].hasNextPage =
+              response.data!.list![0].hasNextPage;
         }
       } else {
         statusSearch = true;
@@ -64,12 +96,21 @@ class SearchViewModel extends GetxController with ManagementController {
   }
 
   subjects() async {
-    var response = await FilterRepo.instance.subjects();
+    // var response = await FilterRepo.instance.subjects();
+    var temp = await dio.get(Env.baseUrl + Env.subjects);
+    final value = BaseResponse<List<Category>>.fromJson(
+      temp.data!,
+      (json) => (json as List<dynamic>)
+          .map<Category>((i) => Category.fromJson(i as Map<String, dynamic>))
+          .toList(),
+    );
+    var response = value;
     if (response.success) {
       statusSubject = true;
       subjectList = response.data;
       subjectList?.insert(0, Category(title: 'الكل'));
-      subjectList?.insert(1, Category(title: 'الأسئلة والأستشارات', id: 'questions'));
+      subjectList?.insert(
+          1, Category(title: 'الأسئلة والأستشارات', id: 'questions'));
     } else {
       statusSubject = false;
       message = response.message;
@@ -77,7 +118,15 @@ class SearchViewModel extends GetxController with ManagementController {
   }
 
   topics() async {
-    var response = await FilterRepo.instance.topics();
+    // var response = await FilterRepo.instance.topics();
+    var temp = await dio.get(Env.baseUrl + Env.topics);
+    final value = BaseResponse<List<Topic>>.fromJson(
+      temp.data!,
+      (json) => (json as List<dynamic>)
+          .map<Topic>((i) => Topic.fromJson(i as Map<String, dynamic>))
+          .toList(),
+    );
+    var response = value;
     if (response.success) {
       statusTopic = true;
       topicList = response.data;
@@ -89,7 +138,14 @@ class SearchViewModel extends GetxController with ManagementController {
   }
 
   materialAttachment() async {
-    var response = await FilterRepo.instance.materialAttachments();
+    // var response = await FilterRepo.instance.materialAttachments();
+    var temp = await dio.get(Env.baseUrl + Env.materialsAttachments);
+    final value = BaseResponse<List<String>>.fromJson(
+      temp.data!,
+      (json) =>
+          (json as List<dynamic>).map<String>((i) => i as String).toList(),
+    );
+    var response = value;
     if (response.success) {
       statusAttachment = true;
       materialAttachmentList = response.data;
@@ -179,7 +235,8 @@ class SearchViewModel extends GetxController with ManagementController {
       await search(isPagination: true);
       setPaginationLoading(false);
     } else {
-      await changeSubject(subjectList!.firstWhere((element) => element.id == category.id));
+      await changeSubject(
+          subjectList!.firstWhere((element) => element.id == category.id));
       setActionLoading(true);
       page++;
       await search(isPagination: true);

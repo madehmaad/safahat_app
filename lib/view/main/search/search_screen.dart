@@ -29,11 +29,13 @@ class _SearchScreenState extends State<SearchScreen> {
   final ScrollController scrollController = ScrollController();
 
   Future<void> pagination() async {
-    if (scrollController.position.pixels == scrollController.position.maxScrollExtent &&
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
         searchViewModel.selectedSubject.value?.title != 'الكل') {
       if (searchViewModel.selectedSubject.value?.id != 'questions') {
         if (searchViewModel.itemSearch!.list![0].hasNextPage ?? false) {
-          searchViewModel.searchPagination(searchViewModel.selectedSubject.value!);
+          searchViewModel
+              .searchPagination(searchViewModel.selectedSubject.value!);
         }
       } else {
         if (searchViewModel.itemSearch?.questionsHasNextPage ?? false) {
@@ -80,7 +82,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                             updateCursorAtTheEnd: false,
                             postfix: IconButton(
-                                icon: const Icon(Icons.cancel_outlined, color: DesignColors.brown),
+                                icon: const Icon(Icons.cancel_outlined,
+                                    color: DesignColors.brown),
                                 onPressed: () {
                                   if (searchController.text.isNotEmpty) {
                                     searchController.clear();
@@ -92,9 +95,12 @@ class _SearchScreenState extends State<SearchScreen> {
                             },
                             onTap: () {
                               if (searchController.selection ==
-                                  TextSelection.fromPosition(TextPosition(offset: searchController.text.length - 1))) {
+                                  TextSelection.fromPosition(TextPosition(
+                                      offset:
+                                          searchController.text.length - 1))) {
                                 searchController.selection =
-                                    TextSelection.fromPosition(TextPosition(offset: searchController.text.length));
+                                    TextSelection.fromPosition(TextPosition(
+                                        offset: searchController.text.length));
                               }
                             },
                           ),
@@ -110,25 +116,25 @@ class _SearchScreenState extends State<SearchScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Obx(
-                        () => searchViewModel.getActionLoading
-                            ? const Expanded(child: FullLoader())
-                            : searchViewModel.itemSearch!.list!.isEmpty &&
-                                    searchViewModel.itemSearch!.questions!.isEmpty
-                                ? const Expanded(child: EmptyScreen(title: 'لا يوجد مواد لعرضها'))
-                                : searchViewModel.selectedSubject.value?.title == 'الكل'
-                                    ? Column(
-                                        children: [
-                                          ...searchViewModel.itemSearch!.list!
-                                              .map((e) => MaterialsList(category: e))
-                                              .toList(),
-                                          if (searchViewModel.itemSearch!.questions!.isNotEmpty) const QuestionList(),
-                                        ],
-                                      )
-                                    : searchViewModel.selectedSubject.value?.id != 'questions'
-                                        ? MaterialList(category: searchViewModel.itemSearch!.list!.first)
-                                        : const QuestionListVertical(),
-                      ),
+                      // Obx(
+                      //   () => searchViewModel.getActionLoading
+                      //       ? const Expanded(child: FullLoader())
+                      //       : searchViewModel.itemSearch!.list!.isEmpty &&
+                      //               searchViewModel.itemSearch!.questions!.isEmpty
+                      //           ? const Expanded(child: EmptyScreen(title: 'لا يوجد مواد لعرضها'))
+                      //           : searchViewModel.selectedSubject.value?.title == 'الكل'
+                      //               ? Column(
+                      //                   children: [
+                      //                     ...searchViewModel.itemSearch!.list!
+                      //                         .map((e) => MaterialsList(category: e))
+                      //                         .toList(),
+                      //                     if (searchViewModel.itemSearch!.questions!.isNotEmpty) const QuestionList(),
+                      //                   ],
+                      //                 )
+                      //               : searchViewModel.selectedSubject.value?.id != 'questions'
+                      //                   ? MaterialList(category: searchViewModel.itemSearch!.list!.first)
+                      //                   : const QuestionListVertical(),
+                      // ),
                     ]),
                   ),
       ),
