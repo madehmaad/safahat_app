@@ -33,10 +33,14 @@ class _MaterialsListState extends State<MaterialsList> {
               children: [
                 Text(
                   widget.category.title,
-                  style: const TextStyle(color: DesignColors.brown, fontSize: 20, fontWeight: FontWeight.w900),
+                  style: const TextStyle(
+                      color: DesignColors.brown,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900),
                 ),
                 InkWell(
                   onTap: () {
+                   
                     searchViewModel.searchPagination(widget.category);
                   },
                   child: Container(
@@ -49,7 +53,10 @@ class _MaterialsListState extends State<MaterialsList> {
                     child: Center(
                       child: Text(
                         'see_more'.tr,
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: DesignColors.white),
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: DesignColors.white),
                       ),
                     ),
                   ),
@@ -72,15 +79,26 @@ class _MaterialsListState extends State<MaterialsList> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => InkWell(
                       onTap: () {
-                        MaterialViewModel materialViewModel = Get.put(MaterialViewModel());
-                        materialViewModel.materialSlug = widget.category.materials?[index].slug;
+                        MaterialViewModel materialViewModel =
+                            Get.put(MaterialViewModel());
+                        materialViewModel.materialModel?.title =
+                            widget.category.materials?[index].title;
+                        materialViewModel.materialSlug = widget
+                            .category.materials?[index].slug
+                            .toString()
+                            .replaceAll('-', '_')
+                            .toString();
                         materialViewModel.getAllData();
                         Get.toNamed(AppRoutes.material);
+                        print(materialViewModel.materialSlug);
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child:
-                            SizedBox(width: 250, child: MaterialCard(materialModel: widget.category.materials![index])),
+                        child: SizedBox(
+                            width: 250,
+                            child: MaterialCard(
+                                materialModel:
+                                    widget.category.materials![index])),
                       )),
                 ),
               ),

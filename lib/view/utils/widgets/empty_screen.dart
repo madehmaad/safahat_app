@@ -10,24 +10,28 @@ class EmptyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: Column(
-        children: [
-          const Spacer(),
-          Center(
-            child: Image.asset(
-              ImageAssets.splash,
-              height: 200,
-              width: 200,
+      height: MediaQuery.sizeOf(context).height / 1.3,
+      width: MediaQuery.sizeOf(context).width,
+      child: Center(
+        child: Column(
+          children: [
+            const Spacer(),
+            Center(
+              child: Image.asset(
+                ImageAssets.splash,
+                height: 200,
+                width: 200,
+              ),
             ),
-          ),
-          const Spacer(),
-          Center(
-              child: Text(title,
-                  style: const TextStyle(fontSize: 18, color: DesignColors.gray2), textAlign: TextAlign.center)),
-          const Spacer(),
-        ],
+            const Spacer(),
+            Center(
+                child: Text(title,
+                    style: const TextStyle(
+                        fontSize: 18, color: DesignColors.gray2),
+                    textAlign: TextAlign.center)),
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }

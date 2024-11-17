@@ -16,6 +16,7 @@ class MaterialViewModel extends GetxController with ManagementController {
   String? materialSlug;
   RxDouble fontSize = 0.0.obs;
   RxBool showYoutube = true.obs;
+  bool isFounded = true;
 
   getAllData() async {
     showYoutube.value = true;
@@ -39,20 +40,30 @@ class MaterialViewModel extends GetxController with ManagementController {
   }
 
   getMaterial() async {
-    var temp = await dio.get(Env.baseUrl + Env.materialDetails + materialSlug!);
-    // await MaterialRepo.instance.getMaterial(slug: materialSlug ?? '');
+    try {
+      print(Env.baseUrl + Env.materialDetails + materialSlug!);
+      var temp =
+          await dio.get(Env.baseUrl + Env.materialDetails + materialSlug!);
+      // await MaterialRepo.instance.getMaterial(slug: materialSlug ?? '');
 
-    final value = BaseResponse<MaterialModel>.fromJson(
-      temp.data!,
-      (json) => MaterialModel.fromJson(json as Map<String, dynamic>),
-    );
-    var response = value;
-    if (response.success) {
-      status = true;
-      materialModel = response.data;
-    } else {
-      status = false;
-      message = response.message;
+      print(temp.data);
+      final value = BaseResponse<MaterialModel>.fromJson(
+        temp.data!,
+        (json) => MaterialModel.fromJson(json as Map<String, dynamic>),
+      );
+      var response = value;
+      print(temp);
+      if (response.success) {
+        isFounded = true;
+        status = true;
+        materialModel = response.data;
+      } else {
+        status = false;
+        message = response.message;
+      }
+    } catch (e) {
+      isFounded = false;
+      // message = response.message;
     }
   }
 

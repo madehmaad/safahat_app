@@ -6,6 +6,7 @@ import 'package:dr_alshaal/view/main/material/widget/youtube_player.dart';
 import 'package:dr_alshaal/view/main/player/widget/home_player.dart';
 import 'package:dr_alshaal/view/main/player/widget/media_player.dart';
 import 'package:dr_alshaal/view/utils/widgets/base_scaffold.dart';
+import 'package:dr_alshaal/view/utils/widgets/empty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -136,357 +137,375 @@ class _MaterialScreenState extends State<MaterialScreen> {
                       : !materialViewModel.status
                           ? ErrorScreen(
                               refresh: () => materialViewModel.getAllData())
-                          : Expanded(
-                              child: SingleChildScrollView(
-                                controller: navController,
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                          width: double.infinity,
-                                          child: materialViewModel
-                                                  .showYoutube.value
-                                              ? const YouTubePlayer()
-                                              : null),
-                                      Padding(
-                                        padding: const EdgeInsets.all(20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              DateFormat(
-                                                      "EEEE dd/MM/yyyy", 'ar')
-                                                  .format(DateTime.parse(
-                                                      materialViewModel
-                                                          .materialModel
-                                                          ?.materialDate)),
-                                              style: const TextStyle(
-                                                  color: DesignColors.brown,
-                                                  fontSize: 16),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Row(
+                          : !materialViewModel.isFounded
+                              ? EmptyScreen(
+                                  title: 'لم يتم العثور على المادة المختارة')
+                              : Expanded(
+                                  child: SingleChildScrollView(
+                                    controller: navController,
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                              width: double.infinity,
+                                              child: materialViewModel
+                                                      .showYoutube.value
+                                                  ? const YouTubePlayer()
+                                                  : null),
+                                          Padding(
+                                            padding: const EdgeInsets.all(20),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                if (materialViewModel
-                                                            .materialModel!
-                                                            .featuredVideo !=
-                                                        null ||
-                                                    materialViewModel
-                                                        .materialModel!
-                                                        .attachments!
-                                                        .isNotEmpty)
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Future.delayed(
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  200),
-                                                          () => appController
-                                                              .navBarIsVisible
-                                                              .value = true);
-                                                      PlayerViewModel
-                                                          controller = Get.put(
-                                                              PlayerViewModel());
-                                                      controller.setMainLoading(
-                                                          false);
-                                                      controller.materialModel =
+                                                Text(
+                                                  DateFormat("EEEE dd/MM/yyyy",
+                                                          'ar')
+                                                      .format(DateTime.parse(
                                                           materialViewModel
-                                                              .materialModel;
-                                                      if (materialViewModel
                                                               .materialModel
-                                                              ?.featuredVideo !=
-                                                          null) {
-                                                        controller.addVideoUrl(
-                                                            materialViewModel
-                                                                .materialModel
-                                                                ?.featuredVideo);
-                                                      }
-                                                      materialViewModel
-                                                          .youtubePlayerController
-                                                          .pause();
+                                                              ?.materialDate)),
+                                                  style: const TextStyle(
+                                                      color: DesignColors.brown,
+                                                      fontSize: 16),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Row(
+                                                  children: [
+                                                    if (materialViewModel
+                                                                .materialModel!
+                                                                .featuredVideo !=
+                                                            null ||
+                                                        materialViewModel
+                                                            .materialModel!
+                                                            .attachments!
+                                                            .isNotEmpty)
+                                                      InkWell(
+                                                        onTap: () {
+                                                          Future.delayed(
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      200),
+                                                              () => appController
+                                                                  .navBarIsVisible
+                                                                  .value = true);
+                                                          PlayerViewModel
+                                                              controller =
+                                                              Get.put(
+                                                                  PlayerViewModel());
+                                                          controller
+                                                              .setMainLoading(
+                                                                  false);
+                                                          controller
+                                                                  .materialModel =
+                                                              materialViewModel
+                                                                  .materialModel;
+                                                          if (materialViewModel
+                                                                  .materialModel
+                                                                  ?.featuredVideo !=
+                                                              null) {
+                                                            controller.addVideoUrl(
+                                                                materialViewModel
+                                                                    .materialModel
+                                                                    ?.featuredVideo);
+                                                          }
+                                                          materialViewModel
+                                                              .youtubePlayerController
+                                                              .pause();
 
-                                                      Get.toNamed(AppRoutes
-                                                          .networkPlayer);
-                                                    },
-                                                    child: Container(
-                                                      width: 160,
-                                                      decoration: BoxDecoration(
-                                                          color: DesignColors
-                                                              .white,
-                                                          border: Border.all(
+                                                          Get.toNamed(AppRoutes
+                                                              .networkPlayer);
+                                                        },
+                                                        child: Container(
+                                                          width: 160,
+                                                          decoration: BoxDecoration(
                                                               color:
                                                                   DesignColors
+                                                                      .white,
+                                                              border: Border.all(
+                                                                  color: DesignColors
                                                                       .primary,
-                                                              width: 1),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50)),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                    8.0),
-                                                        child: FittedBox(
-                                                          fit: BoxFit.fill,
+                                                                  width: 1),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50)),
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture
-                                                                    .asset(
-                                                                  ImageAssets
-                                                                      .downloadButton,
-                                                                  width: 25,
-                                                                  height: 25,
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Text(
-                                                                  'listen_and_download'
-                                                                      .tr,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: DesignColors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        16,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                const Spacer(),
-                                                InkWell(
-                                                  onTap: () {
-                                                    materialViewModel
-                                                        .increaseFontSize();
-                                                  },
-                                                  child: SvgPicture.asset(
-                                                    ImageAssets.zoomIn,
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                InkWell(
-                                                  onTap: () {
-                                                    materialViewModel
-                                                        .decreaseFontSize();
-                                                  },
-                                                  child: SvgPicture.asset(
-                                                    ImageAssets.zoomOut,
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                InkWell(
-                                                  onTap: () {
-                                                    final FavoriteViewModel
-                                                        favoriteViewModel =
-                                                        Get.find();
-                                                    favoriteViewModel
-                                                        .currentId = null;
-                                                    Get.dialog(AlertDialog(
-                                                      insetPadding:
-                                                          const EdgeInsets.all(
-                                                              0),
-                                                      scrollable: true,
-                                                      title: const Center(
-                                                          child: Text(
-                                                              'إضافة إلى المفضلة')),
-                                                      content: SizedBox(
-                                                          width: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .width,
-                                                          height: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height,
-                                                          child:
-                                                              AddFavoriteScreen(
-                                                                  isAdd: true)),
-                                                      actions: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          children: [
-                                                            CustomizedFilledButton(
-                                                                width: 100,
-                                                                text: 'إضافة',
-                                                                function: () {
-                                                                  favoriteViewModel.addMaterial(
-                                                                      title: materialViewModel
-                                                                              .materialModel
-                                                                              ?.title ??
-                                                                          '',
-                                                                      slug: materialViewModel
-                                                                              .materialModel
-                                                                              ?.slug ??
-                                                                          '',
-                                                                      imageUrl:
-                                                                          materialViewModel.materialModel?.mainImage ??
-                                                                              '');
-                                                                  Get.back();
-                                                                  favoriteViewModel
-                                                                          .currentId =
-                                                                      null;
-                                                                }),
-                                                            CustomizedOutlinedButton(
-                                                                width: 100,
-                                                                text: 'إلغاء',
-                                                                function: () {
-                                                                  Get.back();
-                                                                  favoriteViewModel
-                                                                          .currentId =
-                                                                      null;
-                                                                }),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ));
-                                                  },
-                                                  child: SvgPicture.asset(
-                                                    ImageAssets.addFavorite,
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                InkWell(
-                                                  onTap: () {
-                                                    Share.share(
-                                                        '${Env.appLink}${materialViewModel.materialSlug}');
-                                                  },
-                                                  child: SvgPicture.asset(
-                                                    ImageAssets.share,
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Obx(
-                                              () => Html(
-                                                data: materialViewModel
-                                                        .materialModel
-                                                        ?.description ??
-                                                    '',
-                                                style: {
-                                                  "span": Style(
-                                                      fontSize: FontSize(
-                                                          materialViewModel
-                                                              .fontSize.value),
-                                                      // padding: EdgeInsets.zero,
-                                                      margin: Margins.zero),
-                                                  "p": Style(
-                                                      fontSize: FontSize(
-                                                          materialViewModel
-                                                              .fontSize.value),
-                                                      // padding: EdgeInsets.zero,
-                                                      margin: Margins.zero),
-                                                },
-                                                onLinkTap: (String? url,
-                                                    Map<String, String>
-                                                        attributes,
-                                                    var element) async {
-                                                  launchUrl(Uri.parse(url!));
-                                                },
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            if (materialViewModel.materialModel!
-                                                .tags!.isNotEmpty)
-                                              Text(
-                                                'opening_word'.tr,
-                                                style: const TextStyle(
-                                                    fontSize: 24,
-                                                    color: DesignColors.brown),
-                                              ),
-                                            Wrap(
-                                              children: [
-                                                ...materialViewModel
-                                                    .materialModel!.tags!
-                                                    .map((e) => InkWell(
-                                                          onTap: () {
-                                                            Future.delayed(
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        200),
-                                                                () => appController
-                                                                    .navBarIsVisible
-                                                                    .value = true);
-                                                            SearchViewModel
-                                                                searchViewModel =
-                                                                Get.put(
-                                                                    SearchViewModel());
-                                                            searchViewModel
-                                                                .query = e.name;
-                                                            searchViewModel
-                                                                .getAllData();
-                                                            Get.toNamed(
-                                                                AppRoutes
-                                                                    .search);
-                                                          },
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              decoration: BoxDecoration(
-                                                                  color:
-                                                                      DesignColors
-                                                                          .white,
-                                                                  border: Border.all(
-                                                                      color: DesignColors
-                                                                          .primary,
-                                                                      width: 1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              50)),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
-                                                                        10.0),
-                                                                child: Text(
-                                                                  e.name,
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          18),
+                                                                        8.0),
+                                                            child: FittedBox(
+                                                              fit: BoxFit.fill,
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      ImageAssets
+                                                                          .downloadButton,
+                                                                      width: 25,
+                                                                      height:
+                                                                          25,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    Text(
+                                                                      'listen_and_download'
+                                                                          .tr,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        color: DesignColors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontSize:
+                                                                            16,
+                                                                      ),
+                                                                    )
+                                                                  ],
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ))
-                                                    .toList()
+                                                        ),
+                                                      ),
+                                                    const Spacer(),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        materialViewModel
+                                                            .increaseFontSize();
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        ImageAssets.zoomIn,
+                                                        width: 25,
+                                                        height: 25,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        materialViewModel
+                                                            .decreaseFontSize();
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        ImageAssets.zoomOut,
+                                                        width: 25,
+                                                        height: 25,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        final FavoriteViewModel
+                                                            favoriteViewModel =
+                                                            Get.find();
+                                                        favoriteViewModel
+                                                            .currentId = null;
+                                                        Get.dialog(AlertDialog(
+                                                          insetPadding:
+                                                              const EdgeInsets
+                                                                  .all(0),
+                                                          scrollable: true,
+                                                          title: const Center(
+                                                              child: Text(
+                                                                  'إضافة إلى المفضلة')),
+                                                          content: SizedBox(
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                              height:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height,
+                                                              child:
+                                                                  AddFavoriteScreen(
+                                                                      isAdd:
+                                                                          true)),
+                                                          actions: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                CustomizedFilledButton(
+                                                                    width: 100,
+                                                                    text:
+                                                                        'إضافة',
+                                                                    function:
+                                                                        () {
+                                                                      favoriteViewModel.addMaterial(
+                                                                          title: materialViewModel.materialModel?.title ??
+                                                                              '',
+                                                                          slug: materialViewModel.materialModel?.slug ??
+                                                                              '',
+                                                                          imageUrl:
+                                                                              materialViewModel.materialModel?.mainImage ?? '');
+                                                                      Get.back();
+                                                                      favoriteViewModel
+                                                                              .currentId =
+                                                                          null;
+                                                                    }),
+                                                                CustomizedOutlinedButton(
+                                                                    width: 100,
+                                                                    text:
+                                                                        'إلغاء',
+                                                                    function:
+                                                                        () {
+                                                                      Get.back();
+                                                                      favoriteViewModel
+                                                                              .currentId =
+                                                                          null;
+                                                                    }),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ));
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        ImageAssets.addFavorite,
+                                                        width: 25,
+                                                        height: 25,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Share.share(
+                                                            '${Env.appLink}${materialViewModel.materialSlug}');
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        ImageAssets.share,
+                                                        width: 25,
+                                                        height: 25,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Obx(
+                                                  () => Html(
+                                                    data: materialViewModel
+                                                            .materialModel
+                                                            ?.description ??
+                                                        '',
+                                                    style: {
+                                                      "span": Style(
+                                                          fontSize: FontSize(
+                                                              materialViewModel
+                                                                  .fontSize
+                                                                  .value),
+                                                          // padding: EdgeInsets.zero,
+                                                          margin: Margins.zero),
+                                                      "p": Style(
+                                                          fontSize: FontSize(
+                                                              materialViewModel
+                                                                  .fontSize
+                                                                  .value),
+                                                          // padding: EdgeInsets.zero,
+                                                          margin: Margins.zero),
+                                                    },
+                                                    onLinkTap: (String? url,
+                                                        Map<String, String>
+                                                            attributes,
+                                                        var element) async {
+                                                      launchUrl(
+                                                          Uri.parse(url!));
+                                                    },
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                if (materialViewModel
+                                                    .materialModel!
+                                                    .tags!
+                                                    .isNotEmpty)
+                                                  Text(
+                                                    'opening_word'.tr,
+                                                    style: const TextStyle(
+                                                        fontSize: 24,
+                                                        color:
+                                                            DesignColors.brown),
+                                                  ),
+                                                Wrap(
+                                                  children: [
+                                                    ...materialViewModel
+                                                        .materialModel!.tags!
+                                                        .map((e) => InkWell(
+                                                              onTap: () {
+                                                                Future.delayed(
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            200),
+                                                                    () => appController
+                                                                        .navBarIsVisible
+                                                                        .value = true);
+                                                                SearchViewModel
+                                                                    searchViewModel =
+                                                                    Get.put(
+                                                                        SearchViewModel());
+                                                                searchViewModel
+                                                                        .query =
+                                                                    e.name;
+                                                                searchViewModel
+                                                                    .getAllData();
+                                                                Get.toNamed(
+                                                                    AppRoutes
+                                                                        .search);
+                                                              },
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child:
+                                                                    Container(
+                                                                  decoration: BoxDecoration(
+                                                                      color: DesignColors
+                                                                          .white,
+                                                                      border: Border.all(
+                                                                          color: DesignColors
+                                                                              .primary,
+                                                                          width:
+                                                                              1),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              50)),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            10.0),
+                                                                    child: Text(
+                                                                      e.name,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              18),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ))
+                                                        .toList()
+                                                  ],
+                                                ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ]),
-                              ),
-                            ),
+                                          ),
+                                        ]),
+                                  ),
+                                ),
                 ],
               ),
             )),

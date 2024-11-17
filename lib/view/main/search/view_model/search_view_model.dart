@@ -56,13 +56,13 @@ class SearchViewModel extends GetxController with ManagementController {
     };
     queryParameters.removeWhere((k, v) => v == null);
     var temp = await dio.get(
-        'https://d.dr-shaal.com/api/search_materials?search=%D8%AD&topic=null&type=null&questions=null&attachment=null&from=null&to=null&page=0');
+      'http://95.217.77.145:8090/api/v2/search_materials?search=$query&topic=${selectedTopic.value?.id.toString()}&type=${selectedSubject.value?.id.toString()}&questions=null&attachment=${selectedAttachment.value == 'الكل' ? null : selectedAttachment.value}&from=$selectedDateFrom&to=$selectedDateTo&page=$page',
+    );
     final value = BaseResponse<Search>.fromJson(
       temp.data!,
       (json) => Search.fromJson(json as Map<String, dynamic>),
     );
     var response = value;
-    print(response.success);
 
     // var response = await SearchRepo.instance.search(
     //   from: selectedDateFrom,

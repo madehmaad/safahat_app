@@ -1,3 +1,4 @@
+import 'package:dr_alshaal/resources/assets_manager.dart';
 import 'package:dr_alshaal/view/main/search/view_model/search_view_model.dart';
 import 'package:dr_alshaal/view/main/search/widget/material_list.dart';
 import 'package:dr_alshaal/view/main/search/widget/materials_list.dart';
@@ -8,6 +9,7 @@ import 'package:dr_alshaal/view/utils/widgets/app_bar.dart';
 import 'package:dr_alshaal/view/utils/widgets/error_screen.dart';
 import 'package:dr_alshaal/view/utils/widgets/full_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../../models/category/category.dart';
@@ -116,25 +118,66 @@ class _SearchScreenState extends State<SearchScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      // Obx(
-                      //   () => searchViewModel.getActionLoading
-                      //       ? const Expanded(child: FullLoader())
-                      //       : searchViewModel.itemSearch!.list!.isEmpty &&
-                      //               searchViewModel.itemSearch!.questions!.isEmpty
-                      //           ? const Expanded(child: EmptyScreen(title: 'لا يوجد مواد لعرضها'))
-                      //           : searchViewModel.selectedSubject.value?.title == 'الكل'
-                      //               ? Column(
-                      //                   children: [
-                      //                     ...searchViewModel.itemSearch!.list!
-                      //                         .map((e) => MaterialsList(category: e))
-                      //                         .toList(),
-                      //                     if (searchViewModel.itemSearch!.questions!.isNotEmpty) const QuestionList(),
-                      //                   ],
-                      //                 )
-                      //               : searchViewModel.selectedSubject.value?.id != 'questions'
-                      //                   ? MaterialList(category: searchViewModel.itemSearch!.list!.first)
-                      //                   : const QuestionListVertical(),
-                      // ),
+                      Obx(
+                        () => searchViewModel.getActionLoading
+                            ? Container(
+                                height: MediaQuery.of(context).size.height / 2,
+                                width: MediaQuery.of(context).size.width,
+                                color: const Color.fromARGB(0, 255, 255, 255),
+                                child: const Center(
+                                    child: SpinKitCircle(
+                                  color: DesignColors.primary,
+                                )),
+                              )
+                            : searchViewModel.itemSearch!.list!.isEmpty &&
+                                    searchViewModel
+                                        .itemSearch!.questions!.isEmpty
+                                ? SizedBox(
+                                    height: MediaQuery.sizeOf(context).width,
+                                    width: MediaQuery.sizeOf(context).width,
+                                    child: Column(
+                                      children: [
+                                        const Spacer(),
+                                        Center(
+                                          child: Image.asset(
+                                            ImageAssets.splash,
+                                            height: 200,
+                                            width: 200,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Center(
+                                            child: Text('لا يوجد مواد لعرضها',
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: DesignColors.gray2),
+                                                textAlign: TextAlign.center)),
+                                        const Spacer(),
+                                      ],
+                                    ),
+                                  )
+                                : searchViewModel
+                                            .selectedSubject.value?.title ==
+                                        'الكل'
+                                    ? Column(
+                                        children: [
+                                          ...searchViewModel.itemSearch!.list!
+                                              .map((e) =>
+                                                  MaterialsList(category: e))
+                                              .toList(),
+                                          if (searchViewModel.itemSearch!
+                                              .questions!.isNotEmpty)
+                                            const QuestionList(),
+                                        ],
+                                      )
+                                    : searchViewModel
+                                                .selectedSubject.value?.id !=
+                                            'questions'
+                                        ? MaterialList(
+                                            category: searchViewModel
+                                                .itemSearch!.list!.first)
+                                        : const QuestionListVertical(),
+                      ),
                     ]),
                   ),
       ),
