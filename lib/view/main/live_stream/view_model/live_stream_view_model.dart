@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:dio/dio.dart';
@@ -15,6 +16,7 @@ class LiveStreamViewModel extends GetxController with ManagementController {
   late WebViewController facebookController;
   late WebViewController youtubeController;
   late WebViewController mixlerController;
+  late bool isLive;
 
   @override
   onInit() async {
@@ -52,10 +54,16 @@ class LiveStreamViewModel extends GetxController with ManagementController {
   }
 
   loadYoutube() async {
+    var response = await dio.get(Env.checkLiveYoutube);
+    isLive = response.data['items'].length != 0;
+
+    print(response.data['items'].length);
+
     youtubeController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..loadRequest(Uri.parse(liveStream?.youtube?.iframLink));
+    print(isLive);
   }
 
   loadMixler() async {

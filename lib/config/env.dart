@@ -17,6 +17,8 @@ class Env {
   static const String appLink = "https://www.dr-shaal.com/material-details/";
   static const String googleViewer =
       "https://docs.google.com/gview?embedded=true&url=";
+  static const String checkLiveYoutube =
+      "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC-O2jn0wYbHNO_81yKX1lgQ&eventType=live&type=video&key=AIzaSyBdIiQEHAmGem0NEpDBpNdHrNQVNUMrhaU";
 
   ////////////////////////////////End Points////////////////////////////////
   static const String search = "search_materials/";

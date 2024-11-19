@@ -42,21 +42,28 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                           children: [
                             const Text(
                               'مكسلر 24/7',
-                              style: TextStyle(color: DesignColors.primary, fontSize: 20, fontWeight: FontWeight.w700),
+                              style: TextStyle(
+                                  color: DesignColors.primary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
                             ),
                             InkWell(
-                              onTap: () async =>
-                                  await launchUrl(Uri.parse(liveStreamViewModel.liveStream?.mixler?.redirectLink)),
+                              onTap: () async => await launchUrl(Uri.parse(
+                                  liveStreamViewModel
+                                      .liveStream?.mixler?.redirectLink)),
                               child: Container(
-                                decoration:
-                                    BoxDecoration(color: DesignColors.primary, borderRadius: BorderRadius.circular(5)),
+                                decoration: BoxDecoration(
+                                    color: DesignColors.primary,
+                                    borderRadius: BorderRadius.circular(5)),
                                 height: 30,
                                 width: 120,
                                 child: const Center(
                                   child: Text(
                                     'فتح على مكسلر',
-                                    style:
-                                        TextStyle(color: DesignColors.white, fontWeight: FontWeight.w400, fontSize: 14),
+                                    style: TextStyle(
+                                        color: DesignColors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
                                   ),
                                 ),
                               ),
@@ -65,7 +72,10 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0),
-                          child: Divider(height: 0, thickness: 0.5, color: DesignColors.gray2),
+                          child: Divider(
+                              height: 0,
+                              thickness: 0.5,
+                              color: DesignColors.gray2),
                         ),
                         SizedBox(
                           height: 200,
@@ -79,22 +89,30 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                           children: [
                             const Text(
                               'فيسبوك',
-                              style: TextStyle(color: DesignColors.primary, fontSize: 20, fontWeight: FontWeight.w700),
+                              style: TextStyle(
+                                  color: DesignColors.primary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
                             ),
                             InkWell(
                               onTap: () async => await launchUrl(
-                                  Uri.parse(liveStreamViewModel.liveStream?.facebook?.redirectLink),
-                                  mode: LaunchMode.externalNonBrowserApplication),
+                                  Uri.parse(liveStreamViewModel
+                                      .liveStream?.facebook?.redirectLink),
+                                  mode:
+                                      LaunchMode.externalNonBrowserApplication),
                               child: Container(
-                                decoration:
-                                    BoxDecoration(color: DesignColors.primary, borderRadius: BorderRadius.circular(5)),
+                                decoration: BoxDecoration(
+                                    color: DesignColors.primary,
+                                    borderRadius: BorderRadius.circular(5)),
                                 height: 30,
                                 width: 120,
                                 child: const Center(
                                   child: Text(
                                     'فتح على فيسبوك',
-                                    style:
-                                        TextStyle(color: DesignColors.white, fontWeight: FontWeight.w400, fontSize: 14),
+                                    style: TextStyle(
+                                        color: DesignColors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
                                   ),
                                 ),
                               ),
@@ -103,7 +121,10 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0),
-                          child: Divider(height: 0, thickness: 0.5, color: DesignColors.gray2),
+                          child: Divider(
+                              height: 0,
+                              thickness: 0.5,
+                              color: DesignColors.gray2),
                         ),
                         SizedBox(
                           height: 200,
@@ -117,21 +138,28 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                           children: [
                             const Text(
                               'يوتيوب',
-                              style: TextStyle(color: DesignColors.primary, fontSize: 20, fontWeight: FontWeight.w700),
+                              style: TextStyle(
+                                  color: DesignColors.primary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
                             ),
                             InkWell(
-                              onTap: () async =>
-                                  await launchUrl(Uri.parse(liveStreamViewModel.liveStream?.youtube?.redirectLink)),
+                              onTap: () async => await launchUrl(Uri.parse(
+                                  liveStreamViewModel
+                                      .liveStream?.youtube?.redirectLink)),
                               child: Container(
-                                decoration:
-                                    BoxDecoration(color: DesignColors.primary, borderRadius: BorderRadius.circular(5)),
+                                decoration: BoxDecoration(
+                                    color: DesignColors.primary,
+                                    borderRadius: BorderRadius.circular(5)),
                                 height: 30,
                                 width: 120,
                                 child: const Center(
                                   child: Text(
                                     'فتح على يوتيوب',
-                                    style:
-                                        TextStyle(color: DesignColors.white, fontWeight: FontWeight.w400, fontSize: 14),
+                                    style: TextStyle(
+                                        color: DesignColors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
                                   ),
                                 ),
                               ),
@@ -140,14 +168,22 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0),
-                          child: Divider(height: 0, thickness: 0.5, color: DesignColors.gray2),
+                          child: Divider(
+                              height: 0,
+                              thickness: 0.5,
+                              color: DesignColors.gray2),
                         ),
                         SizedBox(
                           height: 300,
-                          child: WebViewWidget(
-
-                            controller: liveStreamViewModel.youtubeController,
-                          ),
+                          child: (liveStreamViewModel.isLive)
+                              ? WebViewWidget(
+                                  controller:
+                                      liveStreamViewModel.youtubeController,
+                                )
+                              : Image.asset(
+                                  'assets/images/error_logo.png',
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ]),
                     ),
