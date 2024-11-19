@@ -45,6 +45,7 @@ class MaterialsViewModel extends GetxController with ManagementController {
           .toList(),
     );
     var response = value;
+
     if (response.success) {
       materials = response.data;
 

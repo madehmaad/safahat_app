@@ -36,7 +36,9 @@ class CommonCard extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: FancyShimmerImage(
-                    imageUrl: materialModel.mainImage == null ? '' : Env.baseMediaUrl + materialModel.mainImage,
+                    imageUrl: materialModel.mainImage == null
+                        ? ''
+                        : Env.baseMediaUrl + materialModel.mainImage,
                     boxFit: BoxFit.fill,
                     errorWidget: Container(
                       color: Colors.grey[100],
@@ -61,7 +63,10 @@ class CommonCard extends StatelessWidget {
                           materialModel.title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: DesignColors.brown),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: DesignColors.brown),
                         ),
                       ),
                       thinDivider(verticalPadding: 5),
@@ -71,7 +76,10 @@ class CommonCard extends StatelessWidget {
                           materialModel.shortDescription ?? '',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: DesignColors.black),
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: DesignColors.black),
                         ),
                       ),
                       Padding(
@@ -80,10 +88,16 @@ class CommonCard extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                MaterialsViewModel materialsViewModel = Get.put(MaterialsViewModel());
-                                materialsViewModel.selectedSeriesId = materialModel.series?.id;
-                                materialsViewModel.selectedSeriesName = materialModel.series?.title;
+                                MaterialsViewModel materialsViewModel =
+                                    Get.put(MaterialsViewModel());
+                                // materialsViewModel.selectedSeriesId =
+                                //     materialModel.series?.id;
+                                materialsViewModel.selectedSeriesName =
+                                    materialModel.series?.title;
+                                materialsViewModel.selectedSeriesSlug =
+                                    materialModel.series?.slug;
                                 materialsViewModel.getAllData();
+
                                 Get.toNamed(AppRoutes.materials);
                               },
                               child: Container(
@@ -95,9 +109,12 @@ class CommonCard extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    materialModel.series?.title ?? 'go_to_serie'.tr,
+                                    materialModel.series?.title ??
+                                        'go_to_serie'.tr,
                                     style: const TextStyle(
-                                        fontSize: 12, fontWeight: FontWeight.w700, color: DesignColors.white),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: DesignColors.white),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
@@ -108,8 +125,10 @@ class CommonCard extends StatelessWidget {
                             const Spacer(),
                             Text(
                               getDateLocal(materialModel.materialDate),
-                              style:
-                                  const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: DesignColors.black),
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: DesignColors.black),
                             )
                           ],
                         ),
