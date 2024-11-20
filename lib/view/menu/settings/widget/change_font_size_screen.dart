@@ -40,11 +40,12 @@ class ChangeFontSizeScreen extends StatelessWidget {
                     height: 20,
                   ),
                   SizedBox(
-                    height: 500,
+                    height: MediaQuery.sizeOf(context).height / 1.65,
                     child: SingleChildScrollView(
                       child: Text(
                         'جميع الحقوق محفوظة موقع الشيخ الطبيب محمد خير الشعال - يمنع المتاجرة بأي مادة بقصد الربح، ويسمح بالنسخ و التوزيع بقصد الدعوة.',
-                        style: TextStyle(fontSize: appController.fontSize.value),
+                        style:
+                            TextStyle(fontSize: appController.fontSize.value),
                         textAlign: TextAlign.center,
                       ),
                     ),
